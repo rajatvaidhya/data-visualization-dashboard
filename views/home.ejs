@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Data Visualization</title>
+</head>
+
+<body>
+
+    <img src="logos/logo (3).png" style="width:15%; height:15%; margin-left:auto; margin-right: auto; display:block">
+
+    <div class="container">
+        <form action="/search" method="post">
+
+            <label><i class="fas fa-filter"></i> Filters</label>
+            <div class="row">
+                <div class="col-md-3">
+                    <select style="width:100%" name="sou">
+                        <option value="Rsou" selected>Source</option>
+                        <% for(var i=0; i<sources.length; i++) { %>
+                            <option value="<%= sources[i] %>">
+                                <%= sources[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="top">
+                        <option value="Rtop" selected>Topics</option>
+                        <% for(var i=0; i<topics.length; i++) { %>
+                            <option value="<%= topics[i] %>">
+                                <%= topics[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                    <select name="sec">
+                        <option value="Rsec" selected>Sector</option>
+                        <% for(var i=0; i<sectors.length; i++) { %>
+                            <option value="<%= sectors[i] %>">
+                                <%= sectors[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="reg">
+                        <option value="Rreg" selected>Region</option>
+                        <% for(var i=0; i<regions.length; i++) { %>
+                            <option value="<%= regions[i] %>">
+                                <%= regions[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                    <select name="pes">
+                        <option value="Rpes" selected>Pestle</option>
+                        <% for(var i=0; i<pestles.length; i++) { %>
+                            <option value="<%= pestles[i] %>">
+                                <%= pestles[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="cou">
+                        <option value="Rcou" selected>Country</option>
+                        <% for(var i=0; i<countries.length; i++) { %>
+                            <% if(i==2) { %>
+                                <%continue;%>
+                                    <% } %>
+                                        <option value="<%= countries[i] %>">
+                                            <%= countries[i] %>
+                                        </option>
+                                        <% } %>
+                    </select>
+                    <select name="end">
+                        <option value="Rend" selected>End year</option>
+                        <% for(var i=0; i<endYear.length; i++) { %>
+                            <option value="<%= endYear[i] %>">
+                                <%= endYear[i] %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Go</button>
+        </form>
+    </div>
+
+    <div class="countryLeader" style="float:left">
+        <h1 class="countryHead" style="margin-bottom: 1rem;"><i class="fas fa-globe-europe"></i> &nbsp&nbsp    Top Country Contribution</h1>
+        <div class="firstCountry">
+            <p style="margin-left:1rem; margin-top: 3rem;"><span>1.   &nbsp&nbsp&nbsp </span><span id="fCountry"></span><span id="fPerc" style="float:right; margin-right:5rem;"></span></p>
+        </div>
+        <div class="firstCountry">
+            <p style="margin-left:1rem; margin-top: 1rem;"><span>2.   &nbsp&nbsp&nbsp </span><span id="sCountry"></span><span id="sPerc" style="float:right; margin-right:5rem;"></span></p>
+        </div>
+        <div class="firstCountry">
+            <p style="margin-left:1rem; margin-top: 1rem;"><span>3.  &nbsp&nbsp&nbsp </span><span id="tCountry"></span><span id="tPerc" style="float:right; margin-right:5rem;"></span></p>
+        </div>
+        <div class="firstCountry">
+            <p style="margin-left:1rem; margin-top: 1rem;"><span>4.  &nbsp&nbsp&nbsp  </span><span id="fourthCountry"></span><span id="fourthPerc" style="float:right; margin-right:5rem;"></span></p>
+        </div>
+        <div class="firstCountry" style="border:none;">
+            <p style="margin-left:1rem; margin-top: 1rem;"><span>5.   &nbsp&nbsp&nbsp </span><span id="fifthCountry"></span><span id="fifthPerc" style="float:right; margin-right:5rem;"></span></p>
+        </div>
+    </div>
+    <div class="intensityGraph" style="height:360px !important;">
+        <h1 class="intensityHead" style="text-align: center; font-weight: 700; margin-bottom: 1rem;">Intensity Graph</h1>
+        <canvas id="myChart"></canvas>
+        <h2 class="overmaxIn">Overall Maximum Intensity : <span id="maxIn" style="color:rgb(255, 255, 255); margin-top: 1.4rem;"></span></h2>
+        <h2 class="overminIn">Overall Minimum Intensity : <span id="minIn" style="color:rgb(255, 255, 255);"></span></h2>
+    </div>
+
+    <button id="en" value="<%= endVal %>" style="display:none"></button>
+
+    <div class="intensityGraph relChart">
+        <div>
+            <h1 class="revHeader" style="float:left;">Relevance</h1>
+        </div>
+        <div id="relevanceChart"></div>
+        <div style="position: relative; display:flex; flex-direction: row; width:100%;">
+            <div class="maxRele">
+                <h2 class="revChilds">Overall Maximum Relevance<br><span id="maxRel"></span></h2>
+            </div>
+            <div class="vl"></div>
+            <div class="minRele">
+                <h2 class="revChilds">Overall Minimum Relevance<br><span id="minRel"></span></h2>
+            </div>
+        </div>  
+    </div>
+
+    <div class="intensityGraph topic_region">
+        <div class="topicSection">
+            <h1>Topic</h1>
+            <div id="topicChart"></div>
+            <h2 class="topicInfoHead">Maximum Occured</h2>
+            <h2 id="maxTopic"></h2>
+            <div class="v2"></div>
+        </div>
+        
+        <div class="regionSection">
+            <h1>Region</h1>
+            <div id="regionChart"></div>
+            <h2 class="topicInfoHead" style="margin-left: 3rem;">Maximum Occured</h2>
+            <h2 id="maxRegion" style="margin-left: 3rem;"></h2>
+        </div>
+        
+    </div>
+
+    <div class="intensityGraph relChart">
+        <div>
+            <h1 class="revHeader" style="float:left;">Likelihood</h1>
+        </div>
+        <div id="likelihoodChart" style="margin-right:0"></div>
+        <div style="position: relative; display:flex; flex-direction: row; width:100%; margin-top: 20rem;">
+            <div class="maxRele">
+                <h2 class="likeChilds">Overall Maximum Likelihood<br><span id="maxLike"></span></h2>
+            </div>
+            <div class="v3"></div>
+            <div class="minRele">
+                <h2 class="likeChilds">Overall Minimum Likelihood<br><span id="minLike"></span></h2>
+            </div>
+        </div>  
+    </div>
+
+    <div class="intensityGraph topic_region">
+        <h1 class="appendHead">Appendix 🎉</h1>
+        <div class="appendDesc">
+            <p> 1. &nbsp; The first graph containing countrys' shows the percentage of country contributing or occuring to the <br> &nbsp; &nbsp; &nbsp; respective fields after or before applying filter.</p>
+            <p> 2. &nbsp; The second graph containing intensity, shows the overall maximum and overall minimum intensity. You &nbsp; &nbsp; &nbsp; &nbsp; can also see the intensity occuring on any end year by selecting the end year field from filters. If the year &nbsp; &nbsp; &nbsp;  contains the Intensity then it will be visible to the intensity graph at the end point because the intensity &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  graph will only show the intensity till the selected year.</p>
+            <p> 3. &nbsp;  Same like Intensity graph, Relevance shows the Overall Max and Min Relevance and same goes with the &nbsp; &nbsp; &nbsp; &nbsp; Likelihood graph which shows the likelihood of the respective entered fields.</p>
+            <p> 4. &nbsp; The fourth section is for the topic and region. It shows the topic occuring and region occuring after<br> &nbsp; &nbsp; &nbsp;&nbsp;  selecting some fields.</p>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+
+    <div class="footer">
+        <p>Made with 💖 by Rajat Vaidhya</p>
+    </div>
+
+
+    <script>
+
+        let intensity = [];
+        let likelihood = [];
+        let relevance = [];
+        let labelArray = [];
+        let selectedYear = document.querySelector("#en").value;
+
+        function drawIntensity(url) {
+
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+
+                    var maxIn = 0;
+                    var minIn = 100000000000;
+
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i] > maxIn) {
+                            maxIn = data[i];
+                        }
+                        if (data[i] < minIn) {
+                            minIn = data[i];
+                        }
+                    }
+
+                    document.getElementById("maxIn").innerHTML = maxIn;
+                    document.getElementById("minIn").innerHTML = minIn;
+
+                    var v = 0;
+
+                    for (var i = 0; i < 10; i++) {
+                        if (i == 9) {
+                            labelArray.push(selectedYear);
+                            continue;
+                        }
+
+                        labelArray.push(" ");
+                    }
+
+                    while (v < 10) {
+                        intensity.push(data[data.length - v - 1]);
+                        v++;
+                    }
+
+                    intensity.reverse();
+
+                    const myChart = document.getElementById('myChart').getContext('2d');
+                    const massChart = new Chart(myChart, {
+
+                        type: 'line',
+                        data: {
+                            labels: labelArray,
+                            datasets: [{
+                                data: intensity
+                            }],
+                        },
+                        options: {
+                            tension:0.4,
+                            plugins: {
+                                legend: {
+                                display: false
+                                },
+                                tooltip:{
+                                    enabled:true
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                    display: false
+                                    },
+                                    ticks: {
+                                        color:'white',
+                                        font: {
+                                            family: 'Poppins',
+                                            size: 10,
+                                        },
+                                    },
+                                },
+                                y: {
+                                    grid: {
+                                    display: false
+                                    },
+                                    ticks: {
+                                        color:'white',
+                                        font: {
+                                            family: 'Poppins',
+                                            size: 10,
+                                        },
+                                    },
+                                }
+                            }
+                        }
+                    })
+                })
+        }
+
+        function getCountry(url) {
+
+            fetch(url)
+            .then((response) => {
+                    return response.json();
+            })
+            .then((data) => {
+
+                const arr = data;
+                const frequencySort = (arr = []) => {
+
+                    let map = {};
+                    for (let i = 0; i < arr.length; i++) {
+                        map[arr[i]] = (map[arr[i]] || 0) + 1;
+                    };
+
+                    return arr.sort((a,b) => map[a] - map[b] || b - a);
+                };
+
+                frequencySort(arr);
+
+                const array = [];
+
+                for(var i=0; i<arr.length; i++)
+                {
+                    if(array.indexOf(arr[i]) === -1) {
+                        array.push(arr[i]);
+                    }
+                }
+
+                const counts = {};
+
+                for (const num of arr) {
+                    counts[num] = counts[num] ? counts[num] + 1 : 1;
+                }
+
+                for(var i=0; i<array.length; i++)
+                {
+                    var str = array[array.length-i-1];
+                    var perc = (counts[str]/arr.length)*100;
+                    
+                    if(i===0)
+                    {
+                        document.getElementById("fCountry").innerHTML = str;
+                        document.getElementById("fPerc").innerHTML = perc.toFixed(2) + " %";
+                    }
+                    if(i===1)
+                    {
+                        document.getElementById("sCountry").innerHTML = str;
+                        document.getElementById("sPerc").innerHTML = perc.toFixed(2) + " %";
+                    }
+                    if(i===2)
+                    {
+                        document.getElementById("tCountry").innerHTML = str;
+                        document.getElementById("tPerc").innerHTML = perc.toFixed(2) + " %";
+                    }
+                    if(i===3)
+                    {
+                        document.getElementById("fourthCountry").innerHTML = str;
+                        document.getElementById("fourthPerc").innerHTML = perc.toFixed(2) + " %";
+                    }
+                    if(i===4)
+                    {
+                        document.getElementById("fifthCountry").innerHTML = str;
+                        document.getElementById("fifthPerc").innerHTML = perc.toFixed(2) + " %";
+                    }
+                }
+            })
+        }
+
+        function getRelevance(url) {
+            fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data)=>{
+
+                // console.log(data);
+
+                var maxRel = 0;
+                var minRel = 100000000000;
+
+                for (var i = 0; i < data.length; i++) {
+
+                    if(data[i]===null)
+                    {
+                        continue;
+                    }
+
+                    if (data[i] > maxRel) {
+                        maxRel = data[i];
+                    }
+                    if (data[i] < minRel) {
+                        minRel = data[i];
+                    }
+                }
+
+                document.getElementById("maxRel").innerHTML = maxRel;
+                document.getElementById("minRel").innerHTML = minRel;
+
+                console.log(maxRel);
+                console.log(minRel);
+
+                var v = 0;
+
+                while (v < 10) {
+                    relevance.push(data[data.length - v - 1]);
+                    v++;
+                }
+
+                relevance.reverse();
+
+                labelArray[labelArray.length-1] = " ";
+
+                var options = {
+                    chart: {
+                        height: 280,
+                        type: "area",
+                        toolbar:{
+                            show:false
+                        },
+                        fontFamily: 'Poppins',
+                    },
+                    legend:{
+                        show:false
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    series: [
+                        {
+                        name: "Relevance",
+                        data: relevance
+                        }
+                    ],
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                        shadeIntensity: 0.5,
+                        opacityFrom: 0.1,
+                        opacityTo: 0.7,
+                        stops: [0, 90, 100]
+                        }
+                    },
+                    xaxis:{
+                        categories:labelArray,
+                        show:false
+                    },
+                    yaxis:{
+                        show:false
+                    },
+                    grid: {
+                        xaxis: {
+                            lines: {
+                                show: false
+                            }
+                        },   
+                        yaxis: {
+                            lines: {
+                                show: false
+                            }
+                        },
+                    },
+                    colors:[
+                        '#FF0000'
+                    ]
+                };
+
+                var chartef = new ApexCharts(document.querySelector("#relevanceChart"), options);
+                chartef.render();
+            })
+        }
+
+        function getTopics(url) {
+
+                fetch(url)
+                .then((response) => {
+                        return response.json();
+                })
+                .then((data) => {
+
+                    const arr = data;
+                    const frequencySort = (arr = []) => {
+
+                        let map = {};
+                        for (let i = 0; i < arr.length; i++) {
+                            map[arr[i]] = (map[arr[i]] || 0) + 1;
+                        };
+
+                        return arr.sort((a,b) => map[a] - map[b] || b - a);
+                    };
+
+                    frequencySort(arr);
+
+                    const counts = {};
+
+                    for (const num of arr) {
+                        counts[num] = counts[num] ? counts[num] + 1 : 1;
+                    }
+
+                    function capitalizeFirstLetter(string) {
+                        return string.charAt(0).toUpperCase() + string.slice(1);
+                    }
+
+                    var topicStr = arr[arr.length-1];
+                    var topicPerc = ((counts[topicStr] / arr.length)*100).toFixed(2);
+                    document.getElementById("maxTopic").innerHTML = capitalizeFirstLetter(topicStr);
+
+                    var options = {
+                            chart: {
+                                height: 230,
+                                type: "radialBar",
+                            },
+
+                            series: [topicPerc],
+                            colors: ["#fceabb"],
+                            plotOptions: {
+                                radialBar: {
+                                hollow: {
+                                    margin: 0,
+                                    size: "70%",
+                                    background: "#262D47"
+                                },
+                                track: {
+                                    dropShadow: {
+                                    enabled: true,
+                                    top: 2,
+                                    left: 0,
+                                    blur: 4,
+                                    opacity: 0.15
+                                    }
+                                },
+                                dataLabels: {
+                                    name: {
+                                    offsetY: -10,
+                                    color: "white",
+                                    fontSize: "13px",
+                                    fontFamily:'Poppins'
+                                    },
+                                    value: {
+                                    color: "white",
+                                    fontSize: "20px",
+                                    show: true,
+                                    fontFamily:'Poppins'
+                                    }
+                                }
+                                }
+                            },
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                shade: "dark",
+                                type: "vertical",
+                                gradientToColors: ["#f8b500"],
+                                stops: [0, 100]
+                                }
+                            },
+                            stroke: {
+                                lineCap: "round"
+                            },
+                            labels: ["Topic Occuring"]
+                            };
+
+                            var chart = new ApexCharts(document.querySelector("#topicChart"), options);
+
+                            chart.render();
+                   
+                })
+        }
+
+        function getRegions(url) {
+
+            fetch(url)
+            .then((response) => {
+                    return response.json();
+            })
+            .then((data) => {
+
+                const arr = data;
+                const frequencySort = (arr = []) => {
+
+                    let map = {};
+                    for (let i = 0; i < arr.length; i++) {
+                        map[arr[i]] = (map[arr[i]] || 0) + 1;
+                    };
+
+                    return arr.sort((a,b) => map[a] - map[b] || b - a);
+                };
+
+                frequencySort(arr);
+
+                const counts = {};
+
+                for (const num of arr) {
+                    counts[num] = counts[num] ? counts[num] + 1 : 1;
+                }
+
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+
+                var regionStr = arr[arr.length-1];
+                var regionPerc = ((counts[regionStr] / arr.length)*100).toFixed(2);
+                document.getElementById("maxRegion").innerHTML = capitalizeFirstLetter(regionStr);
+
+
+                var options = {
+                    chart: {
+                        height: 230,
+                        type: "radialBar",
+                    },
+
+                    series: [regionPerc],
+                    colors: ["#20E647"],
+                    plotOptions: {
+                        radialBar: {
+                        hollow: {
+                            margin: 0,
+                            size: "70%",
+                            background: "#262D47"
+                        },
+                        track: {
+                            dropShadow: {
+                            enabled: true,
+                            top: 2,
+                            left: 0,
+                            blur: 4,
+                            opacity: 0.15
+                            }
+                        },
+                        dataLabels: {
+                            name: {
+                            offsetY: -10,
+                            color: "white",
+                            fontSize: "13px",
+                            fontFamily:'Poppins'
+                            },
+                            value: {
+                            color: "white",
+                            fontSize: "20px",
+                            show: true,
+                            fontFamily:'Poppins'
+                            }
+                        }
+                        }
+                    },
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                        shade: "dark",
+                        type: "vertical",
+                        gradientToColors: ["#87D4F9"],
+                        stops: [0, 100]
+                        }
+                    },
+                    stroke: {
+                        lineCap: "round"
+                    },
+                    labels: ["Region Occuring"]
+                };
+
+                    var chart = new ApexCharts(document.querySelector("#regionChart"), options);
+                    chart.render();
+            })
+        }
+
+        function getLikelihood(url) {
+            fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data)=>{
+
+                var maxLike = 0;
+                var minLike = 100000000000;
+
+                for (var i = 0; i < data.length; i++) {
+
+                    if(data[i]===null)
+                    {
+                        continue;
+                    }
+
+                    if (data[i] > maxLike) {
+                        maxLike = data[i];
+                    }
+                    if (data[i] < minLike) {
+                        minLike = data[i];
+                    }
+                }
+
+                document.getElementById("maxLike").innerHTML = maxLike;
+                document.getElementById("minLike").innerHTML = minLike;
+
+                console.log(maxLike);
+                console.log(minLike);
+
+                var v = 0;
+
+                while (v < 10) {
+                    likelihood.push(data[data.length - v - 1]);
+                    v++;
+                }
+
+                likelihood.reverse();
+
+                labelArray[labelArray.length-1] = " ";
+
+                var options = {
+                        series: [{
+                        name: 'Likelihood',
+                        data: likelihood
+                        }],
+                        chart: {
+                            height: 230,
+                            type: 'bar',
+                            toolbar:{
+                                show:false
+                            },
+                            fontFamily:'Poppins'
+                        },
+                        plotOptions: {
+                        bar: {
+                            borderRadius: 10
+                        }
+                        },
+                        dataLabels: {
+                        enabled: false,
+                        formatter: function (val) {
+                            return val;
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                        },
+                        
+                        xaxis: {
+                            categories: labelArray,
+                            position: 'top',
+                            axisBorder: {
+                                show: false
+                            },
+                            axisTicks: {
+                                show: false
+                            },
+                            crosshairs: {
+                                fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    colorFrom: '#D8E3F0',
+                                    colorTo: '#BED1E6',
+                                    stops: [0, 100],
+                                    opacityFrom: 0.4,
+                                    opacityTo: 0.5,
+                                }
+                                }
+                            },
+                            tooltip: {
+                                enabled: false,
+                            }
+                        },
+                        yaxis: {
+                            axisBorder: {
+                                show: false
+                            },
+                            axisTicks: {
+                                show: false,
+                            },
+                            labels: {
+                                show: false
+                            }
+                        },
+                        grid: {
+                            xaxis: {
+                                lines: {
+                                    show: false
+                                }
+                            },   
+                            yaxis: {
+                                lines: {
+                                    show: false
+                                }
+                            }
+                        }
+                    };
+
+                        var chart = new ApexCharts(document.querySelector("#likelihoodChart"), options);
+                        chart.render();
+            })
+        }
+
+        drawIntensity("http://localhost:3000/intensity");
+        getLikelihood("http://localhost:3000/likelihood");
+        getRelevance("http://localhost:3000/relevance");
+        getCountry("http://localhost:3000/country");
+        getTopics("http://localhost:3000/topics");
+        getRegions("http://localhost:3000/regions");
+
+    
+
+    </script>
+</body>
+
+</html>
